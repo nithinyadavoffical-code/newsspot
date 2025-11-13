@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>News Spot</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="top-left">
+      <button id="dark-toggle">
+        <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+        </svg>
+      </button>
+      <select id="country-select">
+        <option value="in" selected>🇮🇳 India</option>
+        <option value="us">🇺🇸 USA</option>
+        <option value="gb">🇬🇧 UK</option>
+        <option value="au">🇦🇺 Australia</option>
+        <option value="ca">🇨🇦 Canada</option>
+      </select>
+    </div>
+
+    <div class="center-area">
+      <div class="logo">News Spot</div>
+      <div class="search-section">
+        <!-- Search Bar -->
+        <div class="search-wrap">
+          <input id="search-input" type="text" placeholder="Search or pick a category..." />
+          <button id="dropdown-arrow">▾</button>
+          <div id="suggestions" class="suggestions hidden"></div>
+        </div>
+
+        <!-- Time + Calendar + Weather -->
+        <div class="datetime-weather-wrapper" id="datetime-weather-wrapper">
+          <div class="datetime-card" id="datetime-card">
+            <div class="dt-time" id="dt-time">--:--</div>
+            <div class="dt-date" id="dt-date">--</div>
+          </div>
+
+          <!-- WEATHER CARD (beside date/time) -->
+          <div class="weather-card" id="weather-card" title="Click for forecast">
+            <div class="weather-current" id="weather-current">
+              <img id="weather-icon" src="" alt="" />
+              <div>
+                <div class="weather-temp" id="weather-temp">--°C</div>
+                <div class="weather-city" id="weather-city">--</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="calendar-dropdown hidden" id="calendar-dropdown">
+            <div class="calendar-top">
+              <button id="prev-month" class="cal-nav">◀</button>
+              <div id="calendar-month-year" class="cal-month-year">Month Year</div>
+              <button id="next-month" class="cal-nav">▶</button>
+            </div>
+            <div class="calendar-grid" id="calendar-grid"></div>
+            <div class="calendar-legend">
+              <span class="legend holiday-legend"></span> Holiday
+              <span class="legend special-legend"></span> Special Day
+            </div>
+          </div>
+
+          <!-- WEATHER DROPDOWN (matches calendar style) -->
+          <div class="weather-dropdown hidden" id="weather-dropdown">
+            <div class="weather-top">
+              <div class="weather-title">Forecast</div>
+              <div id="weather-location" class="weather-location"></div>
+            </div>
+            <div id="weather-days" class="weather-days"></div>
+            <div id="weather-hourly" class="weather-hourly hidden"></div>
+            <div class="weather-footer">Data provided by OpenWeatherMap</div>
+          </div>
+         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Favourites toggle button -->
+  <div id="fav-toggle-bar" class="fav-toggle-bar">
+    <button id="fav-toggle-btn">Show Favourites</button>
+  </div>
+
+  <!-- News container -->
+  <div class="container">
+    <div id="news-container" class="news-container"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

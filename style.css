@@ -1,0 +1,319 @@
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui,sans-serif;}
+:root{
+  --bg:#f7f9fc;--card:#fff;--text:#183b56;--muted:#577592;--accent:#2294ed;
+  --icon:#1d1d1d;
+}
+html.dark{--bg:#071021;--card:#071a2a;--text:#e6f3ff;--muted:#9fb6cc;--accent:#2fa5ff;--icon:#f1f1f1;}
+body{background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* Topbar */
+.topbar{
+  position:sticky;top:0;display:flex;align-items:center;justify-content:center;
+  gap:16px;padding:14px 20px;background:rgba(255,255,255,0.6);backdrop-filter:blur(6px);
+  z-index:100;
+}
+html.dark .topbar{background:rgba(7,16,33,0.7);}
+
+.top-left{position:absolute;left:12px;display:flex;align-items:center;gap:10px;}
+
+#dark-toggle{
+  background:transparent;border:none;cursor:pointer;width:36px;height:36px;display:flex;align-items:center;justify-content:center;
+}
+#moon-icon{width:22px;height:22px;stroke:var(--icon);transition:stroke 0.3s ease;}
+
+/* Country */
+#country-select{
+  font-size:13px;padding:6px 8px;border-radius:8px;border:1px solid rgba(0,0,0,0.08);
+  background:var(--card);color:var(--text);
+}
+
+/* Center area */
+.center-area{display:flex;flex-direction:column;align-items:center;width:100%;max-width:980px;}
+.logo{font-weight:700;font-size:20px;color:var(--text);margin-bottom:8px;}
+
+/* search + datetime side by side */
+.search-section {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* centered as requested */
+  width: 100%;
+  gap: 12px;
+}
+
+/* make the search bar a little smaller */
+.search-wrap {
+  position: relative;
+  flex: 0 0 520px; /* fixed smaller width */
+  max-width: 62vw;
+  z-index: 1200; /* ensure search area is above other elements */
+}
+
+#search-input {
+  width: 100%;
+  padding: 10px 40px 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: var(--card);
+  color: var(--text);
+  font-size: 15px;
+}
+
+#dropdown-arrow {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  font-size: 18px;
+  padding: 6px;
+  cursor: pointer;
+  color: var(--accent);
+  z-index: 1300; /* ensure arrow is clickable above nearby elements */
+}
+
+/* Suggestions */
+.suggestions {
+  position: absolute;
+  top: 46px;
+  left: 0;
+  width: 100%;
+  max-height: 320px;
+  overflow: auto;
+  border-radius: 10px;
+  background: var(--card);
+  border: 1px solid rgba(0,0,0,0.06);
+  z-index: 1400; /* ensure suggestions are above the datetime widget */
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+.suggestions.hidden{display:none;}
+.suggestions .item{padding:8px 12px;cursor:pointer;font-size:14px;color:var(--text);}
+.suggestions .item:hover{background:rgba(0,0,0,0.05);}
+
+.container{padding:18px;max-width:1100px;margin:0 auto;}
+.news-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;}
+.news-card{background:var(--card);border-radius:12px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,0.08);display:flex;flex-direction:column;}
+.news-card img{width:100%;height:160px;object-fit:cover;}
+.news-card .content{padding:12px;display:flex;flex-direction:column;flex:1;}
+.news-card h3{font-size:15px;margin-bottom:6px;line-height:1.3;color:var(--text);}
+.news-card .meta{font-size:12px;color:var(--muted);margin-bottom:10px;}
+.news-card a{margin-top:auto;text-decoration:none;color:var(--accent);font-weight:600;}
+
+/* Read Out Loud button */
+.news-card .read-controls {
+  display:flex;
+  gap:8px;
+  margin-top:10px;
+  align-items:center;
+}
+.read-btn {
+  padding:6px 10px;
+  border-radius:8px;
+  border:1px solid rgba(0,0,0,0.08);
+  background:transparent;
+  cursor:pointer;
+  font-weight:600;
+  color:var(--accent);
+}
+.read-btn[aria-pressed="true"]{
+  background:var(--accent);
+  color:#fff;
+  border-color:transparent;
+}
+
+@media(max-width:720px){
+  #country-select{display:none;}
+  .logo{font-size:18px;}
+  .search-wrap { flex: 0 0 78vw; } /* responsive for small screens */
+}
+
+/* ========== DATETIME ========== */
+.datetime-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 100px;
+  z-index: 100; /* lower than suggestions so dropdown appears over it */
+}
+
+.datetime-card {
+  background: var(--card);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 6px 10px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  cursor: pointer;
+}
+.dt-time {font-size: 16px;font-weight:700;}
+.dt-date {font-size: 12px;color:var(--muted);}
+
+/* Calendar Dropdown */
+.calendar-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 320px;
+  background: var(--card);
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  padding: 10px;
+  border: 1px solid rgba(0,0,0,0.06);
+  z-index: 99;
+}
+.calendar-top {display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.cal-nav {border:none;background:transparent;cursor:pointer;font-weight:bold;color:var(--muted);}
+.cal-month-year {font-weight:700;color:var(--text);}
+.calendar-grid {display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center;}
+.cal-head {font-size:12px;color:var(--muted);font-weight:700;}
+.cal-day {padding:7px;border-radius:6px;font-size:13px;}
+.cal-day.today {border:1px solid var(--accent);}
+.cal-day.special {background:#20a77b;color:#fff;font-weight:700;}
+.calendar-legend {margin-top:6px;font-size:12px;color:var(--muted);display:flex;gap:10px;align-items:center;}
+.legend {width:12px;height:12px;border-radius:3px;}
+.holiday-legend {background:var(--accent);}
+.special-legend {background:#20a77b;}
+.hidden {display:none!important;}
+/* Favourite button next to Read button at bottom-right of news card */
+.read-controls {
+  display: flex;
+  justify-content: space-between; /* Read left, favourite right */
+  align-items: center;
+  margin-top: 10px;
+}
+
+.fav-btn {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: transparent;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--accent);
+  transition: background 0.2s, color 0.2s;
+}
+
+.fav-btn.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Favourite toggle bar */
+.fav-toggle-bar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.fav-toggle-bar button {
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: var(--card);
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 600;
+}
+/* Existing CSS remains exactly the same... */
+
+/* Favourites toggle bar */
+.fav-toggle-bar {
+  text-align: center;
+  margin: 12px 0;
+}
+#fav-toggle-btn {
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: var(--card);
+  color: var(--text);
+  cursor: pointer;
+}
+#fav-toggle-btn:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* ----- WEATHER CARD + DROPDOWN (appended styles) ----- */
+.datetime-weather-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.weather-card {
+  background: var(--card);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 6px 10px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  cursor: pointer;
+  border: 1px solid rgba(0,0,0,0.04);
+}
+.weather-card img { width:28px; height:28px; object-fit:contain; }
+.weather-current { display:flex; align-items:center; gap:8px; }
+.weather-temp { font-weight:700; font-size:14px; }
+.weather-city { font-size:12px; color:var(--muted); }
+
+/* Dropdown to match calendar */
+.weather-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 340px;
+  max-height: 420px;
+  background: var(--card);
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  padding: 10px;
+  border: 1px solid rgba(0,0,0,0.06);
+  z-index: 99;
+  overflow: auto;
+}
+
+/* Internal layout */
+.weather-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;}
+.weather-title { font-weight:700; color:var(--text); }
+.weather-days { display:flex; flex-direction:column; gap:8px; }
+.weather-day {
+  display:flex; justify-content:space-between; align-items:center; padding:6px 8px; border-radius:8px; cursor:pointer;
+}
+.weather-day:hover { background: rgba(0,0,0,0.03); }
+.weather-day .left { display:flex; gap:8px; align-items:center; }
+.weather-day .label { font-weight:600; font-size:13px; color:var(--text); }
+.weather-day .temps { font-size:13px; color:var(--muted); }
+
+.weather-hourly { margin-top:8px; display:flex; flex-direction:column; gap:6px; }
+.hour-row { display:flex; justify-content:space-between; align-items:center; padding:6px 8px; border-radius:6px; }
+.hour-time { font-size:13px; color:var(--muted); }
+.hour-temp { font-weight:700; }
+
+.weather-footer { margin-top:8px; font-size:11px; color:var(--muted); text-align:center; }
+/* ... your full CSS unchanged above ... */
+
+/* Weather Card */
+.weather-card {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--card);
+  border-radius: 10px;
+  padding: 6px 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  margin-top: 8px;
+}
+#weather-icon img {
+  width: 26px;
+  height: 26px;
+}
+#weather-info {
+  font-size: 14px;
+  color: var(--text);
+}
